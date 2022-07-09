@@ -172,7 +172,8 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    f'http://${FRONTEND_URL}'
+    f'http://${FRONTEND_URL}',
+    f'https://${FRONTEND_URL}'
 ]
 
 # Email settings
