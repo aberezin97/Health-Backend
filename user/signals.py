@@ -18,7 +18,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
             'activate_email.html',
             {
                 'user': instance,
-                'domain': settings.FRONT_URL,
+                'domain': settings.FRONTEND_URL,
                 'uid': urlsafe_base64_encode(force_bytes(instance.pk)),
                 'token': account_activation_token.make_token(instance),
             }

@@ -30,7 +30,7 @@ PRODUCTION = bool(os.environ.get('PRODUCTION', False))
 AUTH_USER_MODEL = 'user.User'
 
 ROOT_URLCONF = 'backend.urls'
-FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://127.0.0.1:3000')
+FRONTEND_URL = os.environ.get('FRONTEND_URL', '127.0.0.1:3000')
 BACKEND_URL = os.environ.get('BACKEND_URL', '127.0.0.1')
 ALLOWED_HOSTS = [BACKEND_URL]
 
@@ -173,10 +173,10 @@ CORS_ALLOWED_ORIGINS = [
 # Email settings
 if not PRODUCTION:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# DEFAULT_FROM_EMAIL = 'Health <noreply@optimistic-lamarr-0d1533.netlify.app>'
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.mailgun.org'
-# EMAIL_PORT = '587'
-# EMAIL_HOST_USER = 'postmaster@sandboxdc493cb0746045e49b5b80ff4d10d515.mailgun.org'
-# EMAIL_HOST_PASSWORD = 'a0c9e3b4c4cdedcc5ff9fef4bb92cd26-0be3b63b-6dc40694'
+else:
+    DEFAULT_FROM_EMAIL = f'Health <noreply@{FRONTEND_URL}>'
+    EMAIL_USE_TLS = True
+    EMAIL_HOST = os.environ['MAILGUN_SMTP_SERVER']
+    EMAIL_PORT = os.environ['MAILGUN_SMTP_PORT']
+    EMAIL_HOST_USER = os.environ['MAILGUN_SMTP_LOGIN']
+    EMAIL_HOST_PASSWORD = os.environ['MAILGUN_SMTP_PASSWORD']
