@@ -182,7 +182,7 @@ if not PRODUCTION:
 else:
     DEFAULT_FROM_EMAIL = f'Health <noreply@{FRONTEND_URL}>'
     EMAIL_USE_TLS = True
-    EMAIL_HOST = os.environ['CLOUDMAILIN_FORWARD_ADDRESS']
-    EMAIL_PORT = 587
-    EMAIL_HOST_USER = os.environ['CLOUDMAILIN_PASSWORD']
-    EMAIL_HOST_PASSWORD = os.environ['CLOUDMAILIN_PASSWORD']
+    EMAIL_HOST = os.environ['SMTP_HOST']
+    EMAIL_PORT = os.environ['SMTP_PORT']
+    EMAIL_HOST_USER = os.environ['SMTP_USER']
+    EMAIL_HOST_PASSWORD = os.environ['SMTP_PASSWORD']
