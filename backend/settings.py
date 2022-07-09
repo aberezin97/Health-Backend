@@ -180,7 +180,7 @@ CORS_ALLOWED_ORIGINS = [
 if not PRODUCTION:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
-    DEFAULT_FROM_EMAIL = f'Health <another.health@yandex.ru>'
+    DEFAULT_FROM_EMAIL = f'Health <noreply@alexber.space>'
     EMAIL_USE_TLS = True
     EMAIL_HOST = os.environ['SMTP_HOST']
     EMAIL_PORT = os.environ['SMTP_PORT']
