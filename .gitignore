@@ -1,0 +1,5 @@
+.idea/
+venv/
+media/
+.DS_Store
+db.sqlite3
