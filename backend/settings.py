@@ -175,8 +175,8 @@ if not PRODUCTION:
     CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    f'http://${FRONTEND_URL}',
-    f'https://${FRONTEND_URL}'
+    f'http://{FRONTEND_URL}',
+    f'https://{FRONTEND_URL}'
 ]
 
 # Email settings
