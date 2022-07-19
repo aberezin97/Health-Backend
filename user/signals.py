@@ -36,7 +36,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     message = render_to_string(
         'reset_password_email.html',
         {
-            'domain': settings.FRONT_URL,
+            'domain': settings.FRONTEND_URL,
             'token': reset_password_token.key,
         }
     )

@@ -46,3 +46,29 @@ class ModifyGoalsOfDaySerializer(serializers.ModelSerializer):
             'limit_carbohydrates',
             'goal_carbohydrates',
         )
+        extra_kwargs = {
+            'limit_calories': {
+                'required': True,
+            },
+            'goal_calories': {
+                'required': True,
+            },
+            'limit_proteins': {
+                'required': True,
+            },
+            'goal_proteins': {
+                'required': True,
+            },
+            'limit_fats': {
+                'required': True,
+            },
+            'goal_fats': {
+                'required': True,
+            },
+            'limit_carbohydrates': {
+                'required': True,
+            },
+            'goal_carbohydrates': {
+                'required': True,
+            }
+        }

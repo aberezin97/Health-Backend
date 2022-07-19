@@ -4,9 +4,26 @@ from user.models import User, Product
 
 
 class UserSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         exclude = ('password',)
+
+    def get_image(self, user):
+        image = None
+        try:
+            image = user.image.url
+        except ValueError:
+            return image
+        request = self.context.get('request')
+        if request is None:
+            return image
+        return request.build_absolute_uri(image)
+
+
+
+
 
 
 class SignUpSerializer(serializers.ModelSerializer):

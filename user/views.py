@@ -31,7 +31,7 @@ class SignInAPIView(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
-            'data': User(user).data
+            'data': UserSerializer(user, context={'request': request}).data
         })
 
 
@@ -60,7 +60,12 @@ class ActivateUserAPIView(generics.UpdateAPIView):
         if account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-            return Response(status=status.HTTP_200_OK)
+            user_token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'token': user_token.key,
+                'data': UserSerializer(user, context={'request': request}).data
+            })
+            # return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -74,7 +79,7 @@ class ChangeUserPasswordAPIView(generics.UpdateAPIView):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         instance = serializer.update(request.user, serializer.validated_data)
-        return Response(UserSerializer(instance).data)
+        return Response(UserSerializer(instance, context={'request': request}).data)
 
 
 class ChangeUserDataAPIView(generics.UpdateAPIView):
@@ -86,7 +91,7 @@ class ChangeUserDataAPIView(generics.UpdateAPIView):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         instance = serializer.update(request.user, serializer.validated_data)
-        return Response(UserSerializer(instance).data)
+        return Response(UserSerializer(instance, context={'request': request}).data)
 
 
 class ChangeUserImageAPIView(generics.UpdateAPIView):
@@ -98,7 +103,7 @@ class ChangeUserImageAPIView(generics.UpdateAPIView):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         instance = serializer.update(request.user, serializer.validated_data)
-        return Response(UserSerializer(instance).data)
+        return Response(UserSerializer(instance, context={'request': request}).data)
 
 
 class DeleteUserAPIView(generics.DestroyAPIView):
