@@ -15,3 +15,12 @@ class Nutrition(models.Model):
 
     def __str__(self):
         return f'{self.day} - {self.time} - {self.name}'
+
+
+class Liquid(models.Model):
+    day = models.ForeignKey(Day, on_delete=models.CASCADE, related_name='liquid')
+    time = models.TimeField(null=True)
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.day} - {self.time} - {self.quantity}'

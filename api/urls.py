@@ -1,11 +1,14 @@
 from user.views import UsersAPIView, SignInAPIView, SignUpAPIView, DeleteUserAPIView, ActivateUserAPIView, \
-    UserProductsAPIView, UserProductDetailsAPIView, ChangeUserPasswordAPIView, ChangeUserDataAPIView, ChangeUserImageAPIView
-from nutrition.views import ModifyGoalsAPIView, NutritionAPIView, ModifyNutritionAPIView
+    UserProductsAPIView, UserProductDetailsAPIView, ChangeUserPasswordAPIView, ChangeUserDataAPIView, ChangeUserImageAPIView, \
+    UserAPIView
+from nutrition.views import ModifyGoalsAPIView, NutritionAPIView, ModifyNutritionAPIView, LiquidAPIView, DeleteLiquidAPIView
 from weight.views import WeightAPIView, ModifyWeightAPIView
 from stats.views import StatsAPIView
+from exercises.views import ExercisesAPIView, ModifyExerciseAPIView
 from django.urls import path, include
 
 urlpatterns = [
+    path('user/<int:pk>/', UserAPIView.as_view()),
     path('user/', UsersAPIView.as_view()),
     path('user/signin/', SignInAPIView.as_view()),
     path('user/signup/', SignUpAPIView.as_view()),
@@ -17,12 +20,17 @@ urlpatterns = [
     path('user/change_password/', ChangeUserPasswordAPIView.as_view()),
     path('user/change_data/', ChangeUserDataAPIView.as_view()),
     path('user/change_image/', ChangeUserImageAPIView.as_view()),
-    path('nutrition/<int:year>/<int:month>/<int:day>/modify_goals/', ModifyGoalsAPIView.as_view()),
-    path('nutrition/<int:year>/<int:month>/<int:day>/', NutritionAPIView.as_view()),
+    path('<int:user_id>/nutrition/<int:year>/<int:month>/<int:day>/modify_goals/', ModifyGoalsAPIView.as_view()),
+    path('<int:user_id>/nutrition/<int:year>/<int:month>/<int:day>/', NutritionAPIView.as_view()),
     path('nutrition/<int:pk>/', ModifyNutritionAPIView.as_view()),
-    path('nutrition/modify_goals/', ModifyGoalsAPIView.as_view()),
-    path('nutrition/', NutritionAPIView.as_view()),
+    path('<int:user_id>/nutrition/modify_goals/', ModifyGoalsAPIView.as_view()),
+    path('<int:user_id>/nutrition/', NutritionAPIView.as_view()),
+    path('<int:user_id>/nutrition/liquid/', LiquidAPIView.as_view()),
+    path('nutrition/liquid/<int:pk>/', DeleteLiquidAPIView.as_view()),
+    path('exercises/', ExercisesAPIView.as_view()),
+    path('exercises/<int:year>/<int:month>/<int:day>/', ExercisesAPIView.as_view()),
+    path('exercises/<int:pk>/', ModifyExerciseAPIView.as_view()),
     path('weight/<int:pk>/', ModifyWeightAPIView.as_view()),
     path('weight/', WeightAPIView.as_view()),
-    path('stats/', StatsAPIView.as_view()),
+    path('<int:user_id>/stats/', StatsAPIView.as_view()),
 ]

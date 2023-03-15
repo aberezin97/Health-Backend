@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from nutrition.models import Nutrition
+from nutrition.models import Nutrition, Liquid
 from user.models import Day
 
 
@@ -33,6 +33,21 @@ class NutritionSerializer(serializers.ModelSerializer):
         }
 
 
+class LiquidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Liquid
+        fields = ('id', 'time', 'quantity')
+        extra_kwargs = {
+            'time': {
+                'required': True,
+                'format': '%H:%M',
+            },
+            'quantity': {
+                'required': True,
+            }
+        }
+
+
 class ModifyGoalsOfDaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Day
@@ -45,6 +60,7 @@ class ModifyGoalsOfDaySerializer(serializers.ModelSerializer):
             'goal_fats',
             'limit_carbohydrates',
             'goal_carbohydrates',
+            'goal_liquid',
         )
         extra_kwargs = {
             'limit_calories': {
@@ -69,6 +85,9 @@ class ModifyGoalsOfDaySerializer(serializers.ModelSerializer):
                 'required': True,
             },
             'goal_carbohydrates': {
+                'required': True,
+            },
+            'goal_liquid': {
                 'required': True,
             }
         }

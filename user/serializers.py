@@ -22,8 +22,23 @@ class UserSerializer(serializers.ModelSerializer):
         return request.build_absolute_uri(image)
 
 
+class UserSerializerShort(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
 
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'image']
 
+    def get_image(self, user):
+        image = None
+        try:
+            image = user.image.url
+        except ValueError:
+            return image
+        request = self.context.get('request')
+        if request is None:
+            return image
+        return request.build_absolute_uri(image)
 
 
 class SignUpSerializer(serializers.ModelSerializer):

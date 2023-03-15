@@ -32,7 +32,7 @@ AUTH_USER_MODEL = 'user.User'
 ROOT_URLCONF = 'backend.urls'
 FRONTEND_URL = os.environ.get('FRONTEND_URL', '127.0.0.1:3000')
 BACKEND_URL = os.environ.get('BACKEND_URL', '127.0.0.1')
-ALLOWED_HOSTS = [BACKEND_URL]
+ALLOWED_HOSTS = ['127.0.0.1', BACKEND_URL]
 
 # Application definition
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django_rest_passwordreset',
     'user.apps.UserConfig',
     'nutrition.apps.NutritionConfig',
+    'exercises.apps.ExercisesConfig',
     'weight.apps.WeightConfig',
     'stats.apps.StatsConfig',
     'api.apps.ApiConfig'

@@ -8,16 +8,22 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.hashers import check_password
 from user.models import User, Product
-from user.serializers import SignUpSerializer, UserSerializer, ChangeUserPasswordSerializer, ChangeUserDataSerializer, ChangeUserImageSerializer, DeleteUserSerializer, UserProductSerializer
+from user.serializers import SignUpSerializer, UserSerializer, UserSerializerShort, ChangeUserPasswordSerializer, ChangeUserDataSerializer, ChangeUserImageSerializer, DeleteUserSerializer, UserProductSerializer
 from user.tokens import account_activation_token
 from user.permissions import IsOwner, IsProductOwner
 
 
 # Create your views here.
 class UsersAPIView(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAdminUser,)
+    queryset = User.objects.filter()
+    serializer_class = UserSerializerShort
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+class UserAPIView(generics.RetrieveAPIView):
+    queryset = User.objects.filter()
+    serializer_class = UserSerializerShort
+    permission_classes = (permissions.IsAuthenticated,)
 
 
 class SignInAPIView(ObtainAuthToken):
