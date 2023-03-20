@@ -158,3 +158,48 @@ class UserProductSerializer(serializers.ModelSerializer):
                 'required': True,
             },
         }
+
+
+class UserDefaultGoalsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'default_goal_liquid',
+            'default_limit_calories',
+            'default_limit_proteins',
+            'default_limit_fats',
+            'default_limit_carbohydrates',
+            'default_goal_calories',
+            'default_goal_proteins',
+            'default_goal_fats',
+            'default_goal_carbohydrates'
+        )
+        extra_kwargs = {
+            'default_goal_liquid': {
+                'required': True,
+            },
+            'default_limit_calories': {
+                'required': True,
+            },
+            'default_limit_proteins': {
+                'required': True,
+            },
+            'default_limit_fats': {
+                'required': True,
+            },
+            'default_limit_carbohydrates': {
+                'required': True,
+            },
+            'default_goal_calories': {
+                'required': True,
+            },
+            'default_goal_proteins': {
+                'required': True,
+            },
+            'default_goal_fats': {
+                'required': True,
+            },
+            'default_goal_carbohydrates': {
+                'required': True,
+            },
+        }

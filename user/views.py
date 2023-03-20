@@ -7,8 +7,18 @@ from rest_framework import generics, status, permissions
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.hashers import check_password
-from user.models import User, Product
-from user.serializers import SignUpSerializer, UserSerializer, UserSerializerShort, ChangeUserPasswordSerializer, ChangeUserDataSerializer, ChangeUserImageSerializer, DeleteUserSerializer, UserProductSerializer
+from user.models import User, Product, Permission
+from user.serializers import (
+    SignUpSerializer,
+    UserSerializer,
+    UserSerializerShort,
+    ChangeUserPasswordSerializer,
+    ChangeUserDataSerializer,
+    ChangeUserImageSerializer,
+    DeleteUserSerializer,
+    UserProductSerializer,
+    UserDefaultGoalsSerializer
+)
 from user.tokens import account_activation_token
 from user.permissions import IsOwner, IsProductOwner
 
@@ -149,3 +159,19 @@ class UserProductDetailsAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     permission_classes = (permissions.IsAuthenticated, IsProductOwner)
     serializer_class = UserProductSerializer
+
+
+class ChangeUserDefaultGoalsAPIView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated, IsOwner)
+    serializer_class = UserDefaultGoalsSerializer
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.update(request.user, serializer.validated_data)
+        return Response(UserSerializer(instance, context={'request': request}).data)
+
+
+class PermissionsAPIView(generics.ListCreateAPIView):
+    queryset = Permission.objects.all()

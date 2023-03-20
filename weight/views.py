@@ -2,20 +2,23 @@ import datetime
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from weight.serializers import WeightSerializer
-from user.models import Day
+from user.models import Day, User
 from user.permissions import IsDayOwner
+from weight.permissions import IsAllowedToReadWriteWeight
 
 
 # Create your views here.
 class WeightAPIView(generics.ListCreateAPIView):
     queryset = Day.objects.exclude(weight=None)
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, IsAllowedToReadWriteWeight)
     serializer_class = WeightSerializer
 
     def list(self, request, *args, **kwargs):
+        user_id = kwargs['user_id']
+        user = User.objects.get(pk=user_id)
         # serializer = self.serializer_class(data=request.data, context={'request': request})
         # serializer.is_valid(raise_exception=True)
-        return Response(WeightSerializer(Day.objects.filter(user=request.user).exclude(weight=None), many=True).data)
+        return Response(WeightSerializer(Day.objects.filter(user=user).exclude(weight=None), many=True).data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})

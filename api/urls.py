@@ -1,7 +1,24 @@
-from user.views import UsersAPIView, SignInAPIView, SignUpAPIView, DeleteUserAPIView, ActivateUserAPIView, \
-    UserProductsAPIView, UserProductDetailsAPIView, ChangeUserPasswordAPIView, ChangeUserDataAPIView, ChangeUserImageAPIView, \
-    UserAPIView
-from nutrition.views import ModifyGoalsAPIView, NutritionAPIView, ModifyNutritionAPIView, LiquidAPIView, DeleteLiquidAPIView
+from user.views import (
+    UsersAPIView,
+    SignInAPIView,
+    SignUpAPIView,
+    DeleteUserAPIView,
+    ActivateUserAPIView,
+    UserProductsAPIView,
+    UserProductDetailsAPIView,
+    ChangeUserPasswordAPIView,
+    ChangeUserDataAPIView,
+    ChangeUserImageAPIView,
+    UserAPIView,
+    ChangeUserDefaultGoalsAPIView
+)
+from nutrition.views import (
+    ModifyGoalsAPIView,
+    NutritionAPIView,
+    ModifyNutritionAPIView,
+    LiquidAPIView,
+    DeleteLiquidAPIView
+)
 from weight.views import WeightAPIView, ModifyWeightAPIView
 from stats.views import StatsAPIView
 from exercises.views import ExercisesAPIView, ModifyExerciseAPIView
@@ -20,6 +37,7 @@ urlpatterns = [
     path('user/change_password/', ChangeUserPasswordAPIView.as_view()),
     path('user/change_data/', ChangeUserDataAPIView.as_view()),
     path('user/change_image/', ChangeUserImageAPIView.as_view()),
+    path('user/change_default_goals/', ChangeUserDefaultGoalsAPIView.as_view()),
     path('<int:user_id>/nutrition/<int:year>/<int:month>/<int:day>/modify_goals/', ModifyGoalsAPIView.as_view()),
     path('<int:user_id>/nutrition/<int:year>/<int:month>/<int:day>/', NutritionAPIView.as_view()),
     path('nutrition/<int:pk>/', ModifyNutritionAPIView.as_view()),
@@ -31,6 +49,6 @@ urlpatterns = [
     path('exercises/<int:year>/<int:month>/<int:day>/', ExercisesAPIView.as_view()),
     path('exercises/<int:pk>/', ModifyExerciseAPIView.as_view()),
     path('weight/<int:pk>/', ModifyWeightAPIView.as_view()),
-    path('weight/', WeightAPIView.as_view()),
+    path('<int:user_id>/weight/', WeightAPIView.as_view()),
     path('<int:user_id>/stats/', StatsAPIView.as_view()),
 ]
