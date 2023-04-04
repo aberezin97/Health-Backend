@@ -26,17 +26,18 @@ class User(AbstractUser):
     is_profile_public = models.BooleanField(default=False)
 
 
-permission_choice = ((0, 'NONE'), (1, 'READ'), (2, 'READWRITE'))
+permission_choice_read = ((0, 'NONE'), (1, 'READ'))
+permission_choice_full = ((0, 'NONE'), (1, 'READ'), (2, 'READWRITE'))
 
 
 class Permission(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='permission_sender')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='permission_receiver')
 
-    weight = models.IntegerField(choices=permission_choice)
-    nutrition = models.IntegerField(choices=permission_choice)
-    exercises = models.IntegerField(choices=permission_choice)
-    stats = models.IntegerField(choices=permission_choice)
+    weight = models.IntegerField(choices=permission_choice_read)
+    nutrition = models.IntegerField(choices=permission_choice_full)
+    exercises = models.IntegerField(choices=permission_choice_full)
+    stats = models.IntegerField(choices=permission_choice_read)
 
     class Meta:
         unique_together = ('sender', 'receiver',)

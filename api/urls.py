@@ -10,7 +10,10 @@ from user.views import (
     ChangeUserDataAPIView,
     ChangeUserImageAPIView,
     UserAPIView,
-    ChangeUserDefaultGoalsAPIView
+    UserDefaultGoalsAPIView,
+    PermissionsAPIView,
+    ModifyPermissionsAPIView,
+    CreatePermissionsAPIView
 )
 from nutrition.views import (
     ModifyGoalsAPIView,
@@ -34,10 +37,13 @@ urlpatterns = [
     path('user/password_reset/', include('django_rest_passwordreset.urls')),
     path('user/products/', UserProductsAPIView.as_view()),
     path('user/products/<int:pk>/', UserProductDetailsAPIView.as_view()),
+    path('user/permissions/', PermissionsAPIView.as_view()),
+    path('user/create_permission/', CreatePermissionsAPIView.as_view()),
+    path('user/permissions/<int:pk>/', ModifyPermissionsAPIView.as_view()),
     path('user/change_password/', ChangeUserPasswordAPIView.as_view()),
     path('user/change_data/', ChangeUserDataAPIView.as_view()),
     path('user/change_image/', ChangeUserImageAPIView.as_view()),
-    path('user/change_default_goals/', ChangeUserDefaultGoalsAPIView.as_view()),
+    path('user/default_goals/', UserDefaultGoalsAPIView.as_view()),
     path('<int:user_id>/nutrition/<int:year>/<int:month>/<int:day>/modify_goals/', ModifyGoalsAPIView.as_view()),
     path('<int:user_id>/nutrition/<int:year>/<int:month>/<int:day>/', NutritionAPIView.as_view()),
     path('nutrition/<int:pk>/', ModifyNutritionAPIView.as_view()),
@@ -45,8 +51,8 @@ urlpatterns = [
     path('<int:user_id>/nutrition/', NutritionAPIView.as_view()),
     path('<int:user_id>/nutrition/liquid/', LiquidAPIView.as_view()),
     path('nutrition/liquid/<int:pk>/', DeleteLiquidAPIView.as_view()),
-    path('exercises/', ExercisesAPIView.as_view()),
-    path('exercises/<int:year>/<int:month>/<int:day>/', ExercisesAPIView.as_view()),
+    path('<int:user_id>/exercises/', ExercisesAPIView.as_view()),
+    path('<int:user_id>/exercises/<int:year>/<int:month>/<int:day>/', ExercisesAPIView.as_view()),
     path('exercises/<int:pk>/', ModifyExerciseAPIView.as_view()),
     path('weight/<int:pk>/', ModifyWeightAPIView.as_view()),
     path('<int:user_id>/weight/', WeightAPIView.as_view()),

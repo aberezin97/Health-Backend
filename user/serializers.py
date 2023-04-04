@@ -1,6 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from user.models import User, Product
+from user.models import User, Product, Permission
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -203,3 +203,45 @@ class UserDefaultGoalsSerializer(serializers.ModelSerializer):
                 'required': True,
             },
         }
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    receiver = UserSerializerShort(many=False)
+
+    class Meta:
+        model = Permission
+        fields = (
+            'id',
+            'receiver',
+            'weight',
+            'nutrition',
+            'exercises',
+            'stats'
+        )
+
+
+class ModifyPermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = (
+            'id',
+            'weight',
+            'nutrition',
+            'exercises',
+            'stats'
+        )
+
+
+class CreatePermissionSerializer(serializers.ModelSerializer):
+    receiver = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=False)
+
+    class Meta:
+        model = Permission
+        fields = (
+            'id',
+            'receiver',
+            'weight',
+            'nutrition',
+            'exercises',
+            'stats'
+        )

@@ -14,3 +14,7 @@ class IsDayOwner(permissions.BasePermission):
 class IsProductOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.user.id == request.user.id
+
+class IsPermissionOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.sender.id == request.user.id

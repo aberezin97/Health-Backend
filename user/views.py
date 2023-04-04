@@ -17,10 +17,13 @@ from user.serializers import (
     ChangeUserImageSerializer,
     DeleteUserSerializer,
     UserProductSerializer,
-    UserDefaultGoalsSerializer
+    UserDefaultGoalsSerializer,
+    PermissionSerializer,
+    CreatePermissionSerializer,
+    ModifyPermissionSerializer
 )
 from user.tokens import account_activation_token
-from user.permissions import IsOwner, IsProductOwner
+from user.permissions import IsOwner, IsProductOwner, IsPermissionOwner
 
 
 # Create your views here.
@@ -161,17 +164,49 @@ class UserProductDetailsAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserProductSerializer
 
 
-class ChangeUserDefaultGoalsAPIView(generics.UpdateAPIView):
+class UserDefaultGoalsAPIView(generics.ListAPIView, generics.UpdateAPIView):
     queryset = User.objects.all()
-    permission_classes = (permissions.IsAuthenticated, IsOwner)
+    permissions_classes = (permissions.IsAuthenticated, IsOwner)
     serializer_class = UserDefaultGoalsSerializer
+
+    def list(self, request, *args, **kwargs):
+        user = User.objects.get(pk=request.user.pk)
+        return Response(UserDefaultGoalsSerializer(user).data)
 
     def update(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         instance = serializer.update(request.user, serializer.validated_data)
-        return Response(UserSerializer(instance, context={'request': request}).data)
+        return Response(UserDefaultGoalsSerializer(instance, context={'request': request}).data)
 
 
-class PermissionsAPIView(generics.ListCreateAPIView):
+class PermissionsAPIView(generics.ListAPIView):
     queryset = Permission.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = PermissionSerializer
+
+    def list(self, request, *args, **kwargs):
+        permissions = Permission.objects.filter(sender=request.user.pk)
+        return Response(PermissionSerializer(permissions, many=True).data)
+
+
+class CreatePermissionsAPIView(generics.CreateAPIView):
+    queryset = Permission.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = CreatePermissionSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        if serializer.data['receiver'] == request.user.pk:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        sender = User.objects.get(pk=request.user.pk)
+        permission = Permission.objects.create(sender=sender, **serializer.validated_data)
+        return Response(PermissionSerializer(permission).data)
+
+
+class ModifyPermissionsAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Permission.objects.all()
+    permission_classes = (permissions.IsAuthenticated, IsPermissionOwner)
+    serializer_class = ModifyPermissionSerializer
+
